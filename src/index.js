@@ -4,10 +4,20 @@ const morgan = require("morgan");
 const handlebars = require("express-handlebars");
 const app = express();
 const port = 4000;
+
 // http logger
-app.use(morgan("combined"));
+// app.use(morgan("combined"));
 
 app.use(express.static(path.join(__dirname, "public")));
+
+// apply middleware
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.json());
+
 // template engine
 app.engine(
   "hbs",
@@ -24,6 +34,15 @@ app.get("/", (req, res) => {
 
 app.get("/news", (req, res) => {
   res.render("news");
+});
+
+app.get("/search", (req, res) => {
+  res.render("search");
+});
+
+app.post("/search", (req, res) => {
+  console.log("Form data", req.body);
+  res.send("");
 });
 
 app.listen(port, () => {
